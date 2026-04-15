@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Download, Shield, Sparkles, Zap, ChevronRight,
   FileDown, Upload, LayoutGrid, ExternalLink, Star,
-  MessageSquare, Mail, Send, Users
+  MessageSquare, Mail, Send, Users, Code
 } from 'lucide-react';
 
 /* ─── Phone Mockup SVG Widget ─── */
@@ -255,20 +255,20 @@ export default function App() {
           setDownloads(data.count);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const handleDownloadClick = () => {
     // Optimistic UI update
     setDownloads(prev => prev + 1);
-    
+
     // Fire-and-forget API increment
     fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/apk/up')
       .then(res => res.json())
       .then(data => {
         if (data && typeof data.count === 'number') setDownloads(data.count);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const features = [
@@ -351,19 +351,31 @@ export default function App() {
             See your daily schedule at a glance — no apps to open, no portals to log into.
           </p>
 
-          {/* CTA Button */}
-          <a
-            href="/dhTimetable.apk"
-            download="dhTimetable.apk"
-            id="download-apk-btn"
-            onClick={handleDownloadClick}
-            className={`mt-10 btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base sm:text-lg select-none transition-all duration-700 delay-300 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-          >
-            <Download className="w-5 h-5" />
-            Download APK
-            <ChevronRight className="w-4 h-4 opacity-70" />
-          </a>
-          
+          {/* CTA Buttons */}
+          <div className={`mt-10 flex flex-col sm:flex-row items-center gap-4 transition-all duration-700 delay-300 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <a
+              href="/dhTimetable.apk"
+              download="dhTimetable.apk"
+              id="download-apk-btn-stable"
+              onClick={handleDownloadClick}
+              className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
+            >
+              <Download className="w-5 h-5" />
+              Download Stable
+            </a>
+            
+            <a
+              href="/dhTimetableBeta.apk"
+              download="dhTimetableBeta.apk"
+              id="download-apk-btn-beta"
+              className="inline-flex glass-strong items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
+              style={{ color: '#F0F0F5', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <Code className="w-5 h-5 text-amber-400" />
+              Get Beta Version
+            </a>
+          </div>
+
           {/* Stats Badge */}
           <div
             className={`mt-5 inline-flex items-center gap-2 glass px-4 py-2 rounded-full transition-all duration-700 delay-400 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
@@ -459,16 +471,28 @@ export default function App() {
                 <p className="text-text-secondary text-sm sm:text-base mb-8 leading-relaxed">
                   Join DHIU students who've made checking their timetable<br className="hidden sm:block" /> effortless.
                 </p>
-                <a
-                  href="/dhTimetable.apk"
-                  download="dhTimetable.apk"
-                  id="download-apk-btn-2"
-                  onClick={handleDownloadClick}
-                  className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none"
-                >
-                  <Download className="w-5 h-5" />
-                  Download Free APK
-                </a>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <a
+                    href="/dhTimetable.apk"
+                    download="dhTimetable.apk"
+                    id="download-apk-btn-2-stable"
+                    onClick={handleDownloadClick}
+                    className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download Stable
+                  </a>
+                  <a
+                    href="/dhTimetableBeta.apk"
+                    download="dhTimetableBeta.apk"
+                    id="download-apk-btn-2-beta"
+                    className="inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto border"
+                    style={{ color: '#F0F0F5', borderColor: 'rgba(255,255,255,0.1)' }}
+                  >
+                    <Code className="w-5 h-5 text-amber-400" />
+                    Beta Version
+                  </a>
+                </div>
               </div>
             </div>
           </div>
