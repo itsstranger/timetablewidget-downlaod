@@ -1,0 +1,250 @@
+import React, { useState, useEffect } from 'react';
+import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck } from 'lucide-react';
+
+export default function Admin() {
+  const [token, setToken] = useState('');
+  const [file, setFile] = useState(null);
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('gh_admin_token');
+    if (saved) setToken(saved);
+  }, []);
+
+  const handleTokenChange = (e) => {
+    setToken(e.target.value);
+    localStorage.setItem('gh_admin_token', e.target.value);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      validateAndSetFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      validateAndSetFile(e.target.files[0]);
+    }
+  };
+
+  const validateAndSetFile = (f) => {
+    if (!f.name.endsWith('.apk')) {
+      setStatus('error');
+      setErrorMsg('Only .apk files are allowed.');
+      return;
+    }
+    setFile(f);
+    setStatus('idle');
+    setErrorMsg('');
+  };
+
+  const convertToBase64 = (f) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload = () => {
+        // Remove the data URI scheme prefix (e.g., "data:application/vnd.android.package-archive;base64,")
+        const b64 = reader.result.split(',')[1];
+        resolve(b64);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const uploadToGitHub = async () => {
+    if (!file || !token) return;
+    setStatus('loading');
+    setErrorMsg('');
+
+    const repo = 'itsstranger/timetablewidget-downlaod';
+    const filePath = 'public/dhTimetable.apk';
+    const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+    try {
+      // 1. Get existing file SHA (required to update or overwrite)
+      const getRes = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      
+      let sha = null;
+      if (getRes.ok) {
+         const fileData = await getRes.json();
+         sha = fileData.sha;
+      } else if (getRes.status !== 404) {
+         throw new Error('Failed to access repo. Is your GitHub token valid and has repo permissions?');
+      }
+
+      // 2. Convert file to Base64
+      const base64Content = await convertToBase64(file);
+
+      // 3. Commit new file via GitHub API
+      const putRes = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Update APK (${file.name}) via Admin Panel`,
+          content: base64Content,
+          sha: sha,
+          branch: 'main'
+        })
+      });
+
+      if (!putRes.ok) {
+         const err = await putRes.json();
+         throw new Error(err.message || 'Upload to GitHub failed');
+      }
+
+      setStatus('success');
+      setFile(null);
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+      setErrorMsg(err.message);
+    }
+  };
+
+  return (
+    <div className="min-h-screen noise-bg px-5 py-12 flex items-center justify-center" style={{ background: '#121214' }}>
+      <div className="max-w-xl w-full relative z-10">
+        
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="mb-8 flex items-center gap-2 text-sm font-semibold transition-colors hover:text-white"
+          style={{ color: '#A0A0B0' }}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Website
+        </button>
+
+        <div className="glass-strong rounded-3xl p-6 sm:p-10 shadow-glass">
+          <div className="mb-8 text-center">
+            <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-glow"
+              style={{ background: 'rgba(123,122,255,0.15)', border: '1px solid rgba(123,122,255,0.3)' }}>
+              <ShieldCheck className="w-7 h-7" style={{ color: '#7B7AFF' }} />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-text-primary mb-2">Admin Portal</h1>
+            <p className="text-text-secondary text-sm">Over the air updates. Push a new APK directly to GitHub.</p>
+          </div>
+
+          <div className="space-y-6">
+            {/* GitHub Token Field */}
+            <div>
+              <label className="block text-sm font-semibold text-text-primary mb-2">GitHub Access Token</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <Key className="h-4 w-4 text-text-muted" />
+                </div>
+                <input
+                  type="password"
+                  value={token}
+                  onChange={handleTokenChange}
+                  placeholder="ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                  className="w-full bg-[#0D0D0F] border focus:ring-2 focus:outline-none rounded-xl text-sm px-10 py-3 transition-colors"
+                  style={{ 
+                    borderColor: 'rgba(123,122,255,0.2)', 
+                    color: '#F0F0F5'
+                  }}
+                />
+              </div>
+              <p className="mt-2 text-xs text-text-muted">Requires a classic token with <strong className="text-text-secondary">repo</strong> scope.</p>
+            </div>
+
+            {/* Drag and Drop Zone */}
+            <div>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Upload New APK</label>
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`relative border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center transition-all ${
+                  isDragging ? 'bg-[#1a1a24] scale-[1.02]' : 'bg-[#0D0D0F]'
+                }`}
+                style={{
+                  borderColor: isDragging ? '#7B7AFF' : 'rgba(123,122,255,0.2)'
+                }}
+              >
+                <input 
+                  type="file" 
+                  accept=".apk" 
+                  onChange={handleFileChange} 
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <UploadCloud className={`w-10 h-10 mb-3 ${isDragging ? 'animate-bounce' : ''}`} style={{ color: '#7B7AFF' }} />
+                
+                {file ? (
+                  <div className="text-text-primary font-bold text-sm bg-[#121214] px-4 py-2 rounded-lg border border-[#2a2a30]">
+                    {file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+                  </div>
+                ) : (
+                  <>
+                    <p className="font-semibold text-text-primary text-sm mb-1">Click to browse or drag file here</p>
+                    <p className="text-xs text-text-muted">Must be a valid Android .apk file</p>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Status Messages */}
+            {status === 'error' && (
+              <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-200">{errorMsg}</p>
+              </div>
+            )}
+
+            {status === 'success' && (
+              <div className="flex items-start gap-3 bg-green-500/10 border border-green-500/20 rounded-xl p-4">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-green-200">
+                  <p className="font-bold mb-1">Update Pushed Successfully!</p>
+                  <p className="text-green-300 pointer-events-auto">
+                    Vercel is now rebuilding the site with the new APK. It should be live in about 1-2 minutes.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              onClick={uploadToGitHub}
+              disabled={!token || !file || status === 'loading'}
+              className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white transition-all shadow-glow"
+            >
+              {status === 'loading' ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Pushing to GitHub...
+                </>
+              ) : (
+                'Deploy New APK'
+              )}
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
