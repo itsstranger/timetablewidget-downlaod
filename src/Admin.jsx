@@ -77,26 +77,69 @@ export default function Admin() {
     handleCredentialsSave();
 
     try {
-      const base64Content = await convertToBase64(file);
-
-      const res = await fetch('/api/upload', {
+      // 1. Authenticate and get the secure GitHub logic
+      const authRes = await fetch('/api/auth', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          type: versionType,
-          fileBase64: base64Content,
-          filename: file.name
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
       });
 
-      const data = await res.json();
+      // Handle Vercel or Network HTML error pages
+      const rawAuthText = await authRes.text();
+      let authData;
+      try {
+        authData = JSON.parse(rawAuthText);
+      } catch (e) {
+        throw new Error('Server returned an invalid response. API route may be misconfigured.');
+      }
 
-      if (!res.ok) {
-         throw new Error(data.message || 'Upload failed');
+      if (!authRes.ok) {
+        throw new Error(authData.message || 'Authentication failed');
+      }
+
+      const token = authData.token;
+
+      // 2. Perform direct upload to GitHub bypassing Vercel's 4.5MB limit
+      const base64Content = await convertToBase64(file);
+      const repo = 'itsstranger/timetablewidget-downlaod';
+      const filePath = versionType === 'beta' ? 'public/dhTimetableBeta.apk' : 'public/dhTimetable.apk';
+      const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+      const getRes = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      
+      let sha = null;
+      if (getRes.ok) {
+         const fileData = await getRes.json();
+         sha = fileData.sha;
+      } else if (getRes.status !== 404) {
+         throw new Error('Failed to access repo with token.');
+      }
+
+      const bodyPayload = {
+        message: `Update ${versionType.toUpperCase()} APK via Admin Portal`,
+        content: base64Content,
+        branch: 'main'
+      };
+      if (sha) bodyPayload.sha = sha; // Only add SHA if it exists, avoids API rejection on new files
+
+      const putRes = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyPayload)
+      });
+
+      if (!putRes.ok) {
+         const err = await putRes.json();
+         throw new Error(err.message || 'Upload to GitHub failed');
       }
 
       setStatus('success');
