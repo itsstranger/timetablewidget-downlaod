@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Download, Shield, Sparkles, Zap, ChevronRight,
-  FileDown, Upload, LayoutGrid, ExternalLink, Star
+  FileDown, Upload, LayoutGrid, ExternalLink, Star,
+  MessageSquare, Mail, Send
 } from 'lucide-react';
 
 /* ─── Phone Mockup SVG Widget ─── */
@@ -44,7 +45,7 @@ function PhoneMockup() {
           <rect x="10" y="10" width="220" height="470" rx="30" fill="url(#wallGrad)" opacity="0.3" />
 
           {/* Home screen icons grid - tiny */}
-          {[0,1,2,3].map(i => (
+          {[0, 1, 2, 3].map(i => (
             <rect key={i} x={22 + i * 52} y="60" width="38" height="38" rx="10"
               fill={i === 0 ? 'rgba(123,122,255,0.25)' : 'rgba(255,255,255,0.05)'}
               stroke={i === 0 ? 'rgba(123,122,255,0.5)' : 'none'}
@@ -326,8 +327,8 @@ export default function App() {
 
           {/* CTA Button */}
           <a
-            href="/DHIU Timetable.apk"
-            download="DHIU-Timetable.apk"
+            href="/dhTimetable.apk"
+            download="dhTimetable.apk"
             id="download-apk-btn"
             className={`mt-10 btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base sm:text-lg select-none transition-all duration-700 delay-300 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
           >
@@ -421,14 +422,77 @@ export default function App() {
                   Join DHIU students who've made checking their timetable<br className="hidden sm:block" /> effortless.
                 </p>
                 <a
-                  href="/DHIU Timetable.apk"
-                  download="DHIU-Timetable.apk"
+                  href="/dhTimetable.apk"
+                  download="dhTimetable.apk"
                   id="download-apk-btn-2"
                   className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none"
                 >
                   <Download className="w-5 h-5" />
                   Download Free APK
                 </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────── FEEDBACK ──────────────────────── */}
+        <section id="feedback" className="px-5 py-16 sm:py-24">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-10 sm:mb-12">
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#7B7AFF' }}>
+                Feedback
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-black text-text-primary leading-tight">
+                Got ideas or{' '}
+                <span className="text-gradient">found a bug?</span>
+              </h2>
+              <p className="mt-4 text-sm text-text-secondary leading-relaxed max-w-md mx-auto">
+                We'd love to hear from you. Share suggestions, report issues, or just say hello — your feedback makes this app better for everyone.
+              </p>
+            </div>
+
+            <div className="glass rounded-3xl p-6 sm:p-8">
+              <div className="flex flex-col sm:flex-row items-center gap-5">
+                {/* Icon */}
+                <div className="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center"
+                  style={{ background: 'rgba(123,122,255,0.15)', border: '1px solid rgba(123,122,255,0.25)' }}>
+                  <MessageSquare className="w-7 h-7" style={{ color: '#7B7AFF' }} />
+                </div>
+
+                {/* Text */}
+                <div className="text-center sm:text-left flex-1">
+                  <h3 className="font-bold text-text-primary text-base mb-1">Send Us Your Feedback</h3>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    Drop us an email with your thoughts, feature requests, or bug reports. We read every single message.
+                  </p>
+                </div>
+
+                {/* Email Button */}
+                <a
+                  href="mailto:officialcreative.grp@gmail.com?subject=DHIU%20Timetable%20Widget%20Feedback"
+                  id="feedback-email-btn"
+                  className="flex-shrink-0 inline-flex items-center gap-2.5 rounded-2xl px-6 py-3.5 font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 select-none"
+                  style={{
+                    color: '#7B7AFF',
+                    background: 'rgba(123,122,255,0.12)',
+                    border: '1px solid rgba(123,122,255,0.3)',
+                    boxShadow: '0 0 20px rgba(123,122,255,0.1)'
+                  }}
+                >
+                  <Mail className="w-4 h-4" />
+                  Send Email
+                  <Send className="w-3.5 h-3.5 opacity-70" />
+                </a>
+              </div>
+
+              {/* Email display */}
+              <div className="mt-5 pt-5 text-center" style={{ borderTop: '1px solid rgba(123,122,255,0.1)' }}>
+                <p className="text-xs text-text-muted">
+                  Or email us directly at{' '}
+                  <a href="mailto:officialcreative.grp@gmail.com" className="font-semibold transition-colors hover:underline" style={{ color: '#7B7AFF' }}>
+                    officialcreative.grp@gmail.com
+                  </a>
+                </p>
               </div>
             </div>
           </div>
