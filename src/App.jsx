@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Download, Shield, Sparkles, Zap, ChevronRight,
   FileDown, Upload, LayoutGrid, ExternalLink, Star,
-  MessageSquare, Mail, Send
+  MessageSquare, Mail, Send, Users
 } from 'lucide-react';
 
 /* ─── Phone Mockup SVG Widget ─── */
@@ -239,11 +239,37 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
 /* ─── Main App ─── */
 export default function App() {
   const [heroVisible, setHeroVisible] = useState(false);
+  const [downloads, setDownloads] = useState(0);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    // Fetch initial download count silently
+    fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/apk')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count === 'number') {
+          setDownloads(data.count);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleDownloadClick = () => {
+    // Optimistic UI update
+    setDownloads(prev => prev + 1);
+    
+    // Fire-and-forget API increment
+    fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/apk/up')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count === 'number') setDownloads(data.count);
+      })
+      .catch(() => {});
+  };
 
   const features = [
     {
@@ -330,14 +356,26 @@ export default function App() {
             href="/dhTimetable.apk"
             download="dhTimetable.apk"
             id="download-apk-btn"
+            onClick={handleDownloadClick}
             className={`mt-10 btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base sm:text-lg select-none transition-all duration-700 delay-300 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
           >
             <Download className="w-5 h-5" />
             Download APK
             <ChevronRight className="w-4 h-4 opacity-70" />
           </a>
+          
+          {/* Stats Badge */}
+          <div
+            className={`mt-5 inline-flex items-center gap-2 glass px-4 py-2 rounded-full transition-all duration-700 delay-400 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <Users className="w-4 h-4 text-text-primary" style={{ color: '#7B7AFF' }} />
+            <span className="text-xs font-semibold text-text-secondary">
+              Trusted by <strong className="text-text-primary">{downloads > 0 ? downloads : '...'}</strong> students
+            </span>
+          </div>
+
           <p
-            className={`mt-3 text-xs transition-all duration-700 delay-400 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
+            className={`mt-4 text-xs transition-all duration-700 delay-500 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
             style={{ color: '#6B6B7B' }}
           >
             Free · Android 8+ · ~10 MB
@@ -425,6 +463,7 @@ export default function App() {
                   href="/dhTimetable.apk"
                   download="dhTimetable.apk"
                   id="download-apk-btn-2"
+                  onClick={handleDownloadClick}
                   className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none"
                 >
                   <Download className="w-5 h-5" />
