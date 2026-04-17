@@ -193,10 +193,10 @@ function FeatureCard({ icon: Icon, title, description, delay }) {
   return (
     <div
       ref={ref}
-      className={`glass card-hover rounded-3xl p-6 sm:p-7 flex flex-col gap-4 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      className={`glass card-hover rounded-3xl p-6 sm:p-7 flex flex-col items-center text-center gap-4 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+      <div className="w-12 h-12 rounded-2xl flex flex-shrink-0 items-center justify-center"
         style={{ background: 'rgba(123,122,255,0.15)', border: '1px solid rgba(123,122,255,0.25)' }}>
         <Icon className="w-6 h-6" style={{ color: '#7B7AFF' }} />
       </div>
@@ -223,10 +223,10 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
   }, []);
 
   return (
-    <div className="relative flex gap-5 sm:gap-6">
-      {/* Connector line */}
+    <div className="relative flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6 w-full">
+      {/* Connector line - hidden on mobile logic since it's centered, or adjust to center line */}
       {!isLast && (
-        <div className="absolute left-5 sm:left-6 top-14 bottom-0 w-px"
+        <div className="absolute left-1/2 sm:left-6 -translate-x-1/2 sm:translate-x-0 top-14 bottom-0 w-px hidden sm:block"
           style={{ background: 'linear-gradient(to bottom, rgba(123,122,255,0.4), transparent)' }} />
       )}
 
@@ -243,11 +243,11 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
       {/* Content */}
       <div
         ref={ref}
-        className={`pb-10 last:pb-0 flex-1 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'}`}
+        className={`pb-10 sm:pb-10 last:pb-0 flex-1 w-full transition-all duration-700 ${visible ? 'opacity-100 translate-y-0 sm:translate-x-0' : 'opacity-0 translate-y-6 sm:translate-x-6'}`}
         style={{ transitionDelay: `${delay}ms` }}
       >
-        <div className="glass rounded-3xl p-5 sm:p-6">
-          <div className="flex items-center gap-3 mb-3">
+        <div className="glass rounded-3xl p-5 sm:p-6 flex flex-col items-center sm:items-start">
+          <div className="flex items-center justify-center sm:justify-start gap-3 mb-3">
             <Icon className="w-5 h-5 flex-shrink-0" style={{ color: '#7B7AFF' }} />
             <h3 className="font-bold text-text-primary text-base">{title}</h3>
           </div>
@@ -257,7 +257,7 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold rounded-xl px-4 py-2.5 transition-all duration-200 hover:scale-105 active:scale-95"
+              className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-semibold rounded-xl px-4 py-2.5 transition-all duration-200 hover:scale-105 active:scale-95"
               style={{
                 color: '#7B7AFF',
                 background: 'rgba(123,122,255,0.12)',
@@ -483,7 +483,7 @@ export default function App() {
               <p className="mt-4 text-sm text-text-secondary">Three simple steps. No account required.</p>
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
               {steps.map((step, i) => (
                 <StepCard
                   key={i}
