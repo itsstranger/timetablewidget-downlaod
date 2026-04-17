@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2, Settings } from 'lucide-react';
 
 export default function Admin() {
   const [username, setUsername] = useState('');
@@ -11,11 +11,25 @@ export default function Admin() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isDragging, setIsDragging] = useState(false);
 
+  // Beta toggle state
+  const [showBeta, setShowBeta] = useState(false);
+  const [isTogglingBeta, setIsTogglingBeta] = useState(false);
+
   useEffect(() => {
     const savedUser = localStorage.getItem('admin_user');
     const savedPass = localStorage.getItem('admin_pass');
     if (savedUser) setUsername(savedUser);
     if (savedPass) setPassword(savedPass);
+
+    // Fetch initial config for the toggle
+    fetch(`/config.json?v=${Date.now()}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.showBeta !== 'undefined') {
+          setShowBeta(data.showBeta);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const handleCredentialsSave = () => {
@@ -70,36 +84,102 @@ export default function Admin() {
     });
   };
 
+  // Helper to get GitHub token securely
+  const getAuthToken = async () => {
+    handleCredentialsSave();
+    const authRes = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const rawAuthText = await authRes.text();
+    let authData;
+    try {
+      authData = JSON.parse(rawAuthText);
+    } catch (e) {
+      throw new Error('Server returned an invalid response. API route may be misconfigured.');
+    }
+    if (!authRes.ok) {
+      throw new Error(authData.message || 'Authentication failed');
+    }
+    return authData.token;
+  };
+
+  const toggleBetaAccess = async () => {
+    if (!username || !password) {
+      setStatus('error');
+      setErrorMsg('Please enter your admin credentials to toggle beta access.');
+      return;
+    }
+    setIsTogglingBeta(true);
+    setStatus('idle');
+    setErrorMsg('');
+
+    try {
+      const token = await getAuthToken();
+      const newShowBetaState = !showBeta;
+      const repo = 'itsstranger/timetablewidget-downlaod';
+      const filePath = 'public/config.json';
+      const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+      const getRes = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      
+      let sha = null;
+      if (getRes.ok) {
+         const fileData = await getRes.json();
+         sha = fileData.sha;
+      }
+
+      // Convert json to base64 securely resolving utf-8
+      const jsonContent = JSON.stringify({ showBeta: newShowBetaState }, null, 2);
+      const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
+
+      const bodyPayload = {
+        message: `Toggle Beta Access to ${newShowBetaState ? 'ON' : 'OFF'} via Admin Portal`,
+        content: base64Content,
+        branch: 'main'
+      };
+      if (sha) bodyPayload.sha = sha;
+
+      const putRes = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyPayload)
+      });
+
+      if (!putRes.ok) {
+         const err = await putRes.json();
+         throw new Error(err.message || 'Failed to update config.json on GitHub');
+      }
+
+      setShowBeta(newShowBetaState);
+      setStatus('success');
+    } catch (err) {
+      console.error(err);
+      setStatus('error');
+      setErrorMsg(err.message);
+    } finally {
+      setIsTogglingBeta(false);
+    }
+  };
+
   const uploadToBackend = async () => {
     if (!file || !username || !password) return;
     setStatus('loading');
     setErrorMsg('');
-    handleCredentialsSave();
 
     try {
-      // 1. Authenticate and get the secure GitHub logic
-      const authRes = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
+      const token = await getAuthToken();
 
-      // Handle Vercel or Network HTML error pages
-      const rawAuthText = await authRes.text();
-      let authData;
-      try {
-        authData = JSON.parse(rawAuthText);
-      } catch (e) {
-        throw new Error('Server returned an invalid response. API route may be misconfigured.');
-      }
-
-      if (!authRes.ok) {
-        throw new Error(authData.message || 'Authentication failed');
-      }
-
-      const token = authData.token;
-
-      // 2. Perform direct upload to GitHub bypassing Vercel's 4.5MB limit
       const base64Content = await convertToBase64(file);
       const repo = 'itsstranger/timetablewidget-downlaod';
       const filePath = versionType === 'beta' ? 'public/dhTimetableBeta.apk' : 'public/dhTimetable.apk';
@@ -116,8 +196,6 @@ export default function Admin() {
       if (getRes.ok) {
          const fileData = await getRes.json();
          sha = fileData.sha;
-      } else if (getRes.status !== 404) {
-         throw new Error('Failed to access repo with token.');
       }
 
       const bodyPayload = {
@@ -125,7 +203,7 @@ export default function Admin() {
         content: base64Content,
         branch: 'main'
       };
-      if (sha) bodyPayload.sha = sha; // Only add SHA if it exists, avoids API rejection on new files
+      if (sha) bodyPayload.sha = sha; 
 
       const putRes = await fetch(url, {
         method: 'PUT',
@@ -171,12 +249,12 @@ export default function Admin() {
               <ShieldCheck className="w-7 h-7" style={{ color: '#7B7AFF' }} />
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-text-primary mb-2">Admin Portal</h1>
-            <p className="text-text-secondary text-sm">Securely update the Stable or Beta APK files.</p>
+            <p className="text-text-secondary text-sm">Manage file versions and live feature flags.</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             
-            {/* Split row for Credentials */}
+            {/* Credentials Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-text-primary mb-2">Username</label>
@@ -212,9 +290,41 @@ export default function Admin() {
               </div>
             </div>
 
+            {/* Feature Flags Section */}
+            <div className="bg-[#121214] border border-[#2a2a30] rounded-2xl p-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex flex-shrink-0 items-center justify-center">
+                    <Settings className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-text-primary">Enable Beta Downloads</h3>
+                    <p className="text-xs text-text-muted">Show the Beta Download button to all users publicly.</p>
+                  </div>
+                </div>
+                
+                {/* Custom Toggle Switch */}
+                <button
+                  onClick={toggleBetaAccess}
+                  disabled={isTogglingBeta || status === 'loading'}
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-50 ${
+                    showBeta ? 'bg-orange-500' : 'bg-[#2a2a30]'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      showBeta ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <hr className="border-t border-[#2a2a30]" />
+
             {/* Version Type Selector */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Target Version</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">Target Upload Version</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setVersionType('stable')}
@@ -292,9 +402,9 @@ export default function Admin() {
               <div className="flex items-start gap-3 bg-green-500/10 border border-green-500/20 rounded-xl p-4">
                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-green-200">
-                  <p className="font-bold mb-1">Update Pushed Successfully!</p>
+                  <p className="font-bold mb-1">Update Action Successful!</p>
                   <p className="text-green-300 pointer-events-auto">
-                    Vercel is now rebuilding the site with the new {versionType === 'stable' ? 'Stable' : 'Beta'} APK. It should be live in 1-2 minutes.
+                    Vercel is now processing the changes. It should be live in 1-2 minutes.
                   </p>
                 </div>
               </div>
@@ -303,7 +413,7 @@ export default function Admin() {
             {/* Submit Button */}
             <button
               onClick={uploadToBackend}
-              disabled={!username || !password || !file || status === 'loading'}
+              disabled={!username || !password || !file || status === 'loading' || isTogglingBeta}
               className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white transition-all shadow-glow"
             >
               {status === 'loading' ? (

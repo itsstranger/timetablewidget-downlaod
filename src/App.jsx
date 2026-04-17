@@ -240,6 +240,7 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
 export default function App() {
   const [heroVisible, setHeroVisible] = useState(false);
   const [downloads, setDownloads] = useState(0);
+  const [showBeta, setShowBeta] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
@@ -254,6 +255,14 @@ export default function App() {
         if (data && typeof data.count === 'number') {
           setDownloads(data.count);
         }
+      })
+      .catch(() => { });
+
+    // Fetch site config (to check if beta channel is enabled)
+    fetch(`/config.json?t=${Date.now()}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.showBeta) setShowBeta(true);
       })
       .catch(() => { });
   }, []);
@@ -364,16 +373,18 @@ export default function App() {
               Download Stable
             </a>
             
-            <a
-              href="/dhTimetableBeta.apk"
-              download="dhTimetableBeta.apk"
-              id="download-apk-btn-beta"
-              className="inline-flex glass-strong items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
-              style={{ color: '#F0F0F5', border: '1px solid rgba(255,255,255,0.1)' }}
-            >
-              <Code className="w-5 h-5 text-amber-400" />
-              Get Beta Version
-            </a>
+            {showBeta && (
+              <a
+                href="/dhTimetableBeta.apk"
+                download="dhTimetableBeta.apk"
+                id="download-apk-btn-beta"
+                className="inline-flex glass-strong items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
+                style={{ color: '#F0F0F5', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                <Code className="w-5 h-5 text-amber-400" />
+                Get Beta Version
+              </a>
+            )}
           </div>
 
           {/* Stats Badge */}
@@ -482,16 +493,18 @@ export default function App() {
                     <Download className="w-5 h-5" />
                     Download Stable
                   </a>
-                  <a
-                    href="/dhTimetableBeta.apk"
-                    download="dhTimetableBeta.apk"
-                    id="download-apk-btn-2-beta"
-                    className="inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto border"
-                    style={{ color: '#F0F0F5', borderColor: 'rgba(255,255,255,0.1)' }}
-                  >
-                    <Code className="w-5 h-5 text-amber-400" />
-                    Beta Version
-                  </a>
+                  {showBeta && (
+                    <a
+                      href="/dhTimetableBeta.apk"
+                      download="dhTimetableBeta.apk"
+                      id="download-apk-btn-2-beta"
+                      className="inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto border"
+                      style={{ color: '#F0F0F5', borderColor: 'rgba(255,255,255,0.1)' }}
+                    >
+                      <Code className="w-5 h-5 text-amber-400" />
+                      Beta Version
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
