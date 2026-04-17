@@ -122,11 +122,13 @@ export default function Admin() {
       const filePath = 'public/config.json';
       const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
-      const getRes = await fetch(url, {
+      const getRes = await fetch(`${url}?ref=main&t=${Date.now()}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3+json'
-        }
+        },
+        cache: 'no-store'
       });
       
       let sha = null;
@@ -185,11 +187,13 @@ export default function Admin() {
       const filePath = versionType === 'beta' ? 'public/dhTimetableBeta.apk' : 'public/dhTimetable.apk';
       const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
-      const getRes = await fetch(url, {
+      const getRes = await fetch(`${url}?ref=main&t=${Date.now()}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3+json'
-        }
+        },
+        cache: 'no-store'
       });
       
       let sha = null;
