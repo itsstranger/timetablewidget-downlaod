@@ -7,20 +7,29 @@ import {
 
 /* ─── Phone Mockup SVG Widget ─── */
 function PhoneMockup() {
-  const now = new Date();
-  const currentHour = now.getHours();
-
   const periods = [
-    { time: '08:00', subject: 'Islamic Studies', room: 'Hall A', active: currentHour === 8 },
-    { time: '09:30', subject: 'Data Structures', room: 'Lab 3', active: currentHour === 9 },
-    { time: '11:00', subject: 'Linear Algebra', room: 'Room 204', active: currentHour === 11 },
-    { time: '12:30', subject: 'Lunch Break', room: '—', active: currentHour === 12 },
-    { time: '14:00', subject: 'Web Dev', room: 'Lab 1', active: currentHour === 14 },
+    { 
+      time: '07:30 — 08:25', 
+      period: 'PERIOD 1', 
+      subjectLines: ['علم أسرار الشريعة (حجة الله', 'البالغة)'], 
+      room: 'LT-08',
+      y: 75
+    },
+    { 
+      time: '12:05 — 13:00', 
+      period: 'PERIOD 6', 
+      subjectLines: ['Introduction to', 'Institution Leadership', 'and Management'], 
+      room: 'LT-10',
+      y: 135
+    },
+    { 
+      time: '13:00 — 13:55', 
+      period: 'PERIOD 7', 
+      subjectLines: ['Medieval Muslim', 'Scholarship in Study', 'of Religion'], 
+      room: 'LT-09',
+      y: 215
+    }
   ];
-
-  // Always highlight one for demo
-  const demoActive = periods.findIndex(p => p.active);
-  const activeIdx = demoActive !== -1 ? demoActive : 2;
 
   return (
     <div className="relative flex justify-center items-end h-full animate-float">
@@ -28,93 +37,118 @@ function PhoneMockup() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-20 rounded-full"
         style={{ background: 'radial-gradient(ellipse, rgba(123,122,255,0.35) 0%, transparent 70%)' }} />
 
-      {/* Phone shell */}
-      <div className="relative z-10 w-[220px] sm:w-[240px]" style={{ filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.7))' }}>
-        <svg viewBox="0 0 240 490" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+      {/* Phone shell (Android Pixel Concept) */}
+      <div className="relative z-10 w-[240px] sm:w-[260px]" style={{ filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.7))' }}>
+        <svg viewBox="0 0 260 520" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           {/* Phone body */}
-          <rect x="2" y="2" width="236" height="486" rx="36" fill="#0D0D0F" stroke="#2A2A30" strokeWidth="3" />
+          <rect x="2" y="2" width="256" height="516" rx="28" fill="#0D0D0F" stroke="#2A2A30" strokeWidth="2.5" />
           {/* Screen background */}
-          <rect x="10" y="10" width="220" height="470" rx="30" fill="#121214" />
-          {/* Notch */}
-          <rect x="85" y="14" width="70" height="16" rx="8" fill="#0D0D0F" />
-          {/* Status bar */}
-          <text x="22" y="40" fill="#A0A0B0" fontSize="9" fontFamily="Inter, sans-serif">9:41</text>
-          <text x="210" y="40" fill="#A0A0B0" fontSize="9" fontFamily="Inter, sans-serif" textAnchor="end">●●●</text>
+          <rect x="8" y="8" width="244" height="504" rx="22" fill="#0A0A0C" />
+          
+          {/* Hole punch camera */}
+          <circle cx="130" cy="24" r="5" fill="#040405" />
+          
+          {/* Android Status bar */}
+          <text x="24" y="28" fill="#F0F0F5" fontSize="9" fontFamily="Inter, sans-serif" fontWeight="600">10:00</text>
+          
+          {/* Battery, Wifi, Signal Dummy */}
+          <g transform="translate(195, 20)">
+             {/* Signal */}
+             <path d="M2.5 7.5 L5 0 L7.5 7.5 Z" fill="#F0F0F5"/>
+             <path d="M8.5 7.5 L11 0 L13.5 7.5 Z" fill="#F0F0F5"/>
+             {/* Wifi */}
+             <path d="M19 1 C21 1 23 2 24.5 3 C25.5 4 25.5 5 24.5 6 L19 11 L13.5 6 C12.5 5 12.5 4 13.5 3 C15 2 17 1 19 1 Z" fill="#F0F0F5"/>
+             {/* Battery */}
+             <rect x="29" y="1.5" width="14" height="7.5" rx="1.5" fill="none" stroke="#F0F0F5" strokeWidth="1" />
+             <rect x="30.5" y="3" width="9" height="4.5" rx="0.5" fill="#F0F0F5" />
+             <rect x="44" y="3.5" width="2" height="3.5" rx="0.5" fill="#F0F0F5" />
+          </g>
 
-          {/* Wallpaper hint */}
-          <rect x="10" y="10" width="220" height="470" rx="30" fill="url(#wallGrad)" opacity="0.3" />
+          {/* Abstract background hint */}
+          <rect x="8" y="8" width="244" height="504" rx="22" fill="url(#wallGrad)" opacity="0.4" />
 
-          {/* Home screen icons grid - tiny */}
-          {[0, 1, 2, 3].map(i => (
-            <rect key={i} x={22 + i * 52} y="60" width="38" height="38" rx="10"
-              fill={i === 0 ? 'rgba(123,122,255,0.25)' : 'rgba(255,255,255,0.05)'}
-              stroke={i === 0 ? 'rgba(123,122,255,0.5)' : 'none'}
-            />
-          ))}
-          {/* Widget area on home screen */}
-          {/* Widget background glass */}
-          <rect x="16" y="112" width="208" height="230" rx="22"
-            fill="rgba(30,30,33,0.85)" stroke="rgba(123,122,255,0.2)" strokeWidth="1" />
-          {/* Widget header */}
-          <text x="30" y="137" fill="#7B7AFF" fontSize="9" fontWeight="700" fontFamily="Inter, sans-serif">
-            DHIU TIMETABLE
-          </text>
-          <text x="30" y="149" fill="#6B6B7B" fontSize="7.5" fontFamily="Inter, sans-serif">
-            Mon, 15 April
-          </text>
-          {/* Divider */}
-          <line x1="30" y1="156" x2="210" y2="156" stroke="rgba(123,122,255,0.12)" strokeWidth="1" />
+          {/* Android Search Bar */}
+          <rect x="20" y="44" width="220" height="36" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+          
+          <g transform="translate(36, 54)">
+            {/* Google G Logo simplified */}
+            <path d="M7.7 4.2C7.7 3.8 7.6 3.5 7.6 3.1H4.1V5.2H6.2C6.1 5.8 5.7 6.4 5.2 6.8V8.1H6.4C7.1 7.4 7.7 6.0 7.7 4.2Z" fill="#4285F4"/>
+            <path d="M4.1 7.9C5.1 7.9 6.0 7.5 6.4 7.0L5.2 5.7C4.8 5.9 4.5 6.0 4.1 6.0C3.3 6.0 2.5 5.5 2.2 4.7H0.9V6.0C1.5 7.2 2.7 7.9 4.1 7.9Z" fill="#34A853"/>
+            <path d="M2.2 4.7C2.1 4.5 2.1 4.2 2.1 3.9C2.1 3.7 2.1 3.4 2.2 3.2V1.9H0.9C0.6 2.5 0.5 3.2 0.5 3.9C0.5 4.7 0.6 5.4 0.9 6.0L2.2 4.7Z" fill="#FBBC05"/>
+            <path d="M4.1 1.9C4.6 1.9 5.1 2.1 5.5 2.5L6.5 1.5C6.0 1.0 5.1 0.6 4.1 0.6C2.7 0.6 1.5 1.4 0.9 2.6L2.2 3.9C2.5 3.1 3.3 1.9 4.1 1.9Z" fill="#EA4335"/>
+          </g>
 
-          {/* Period rows */}
-          {periods.map((p, i) => (
-            <g key={i}>
-              {/* Active highlight */}
-              {i === activeIdx && (
-                <rect x="16" y={162 + i * 36} width="208" height="34"
-                  fill="rgba(123,122,255,0.15)" />
-              )}
-              {i === activeIdx && (
-                <rect x="16" y={162 + i * 36} width="3" height="34"
-                  fill="#7B7AFF" rx="1.5" />
-              )}
-              {/* Time */}
-              <text x="27" y={173 + i * 36}
-                fill={i === activeIdx ? '#7B7AFF' : '#6B6B7B'}
-                fontSize="7" fontFamily="Inter, sans-serif" fontWeight={i === activeIdx ? '600' : '400'}>
-                {p.time}
-              </text>
-              {/* Subject */}
-              <text x="65" y={173 + i * 36}
-                fill={i === activeIdx ? '#F0F0F5' : '#A0A0B0'}
-                fontSize="8.5" fontFamily="Inter, sans-serif" fontWeight={i === activeIdx ? '600' : '400'}>
-                {p.subject}
-              </text>
-              {/* Room */}
-              <text x="65" y={183 + i * 36}
-                fill={i === activeIdx ? '#7B7AFF' : '#6B6B7B'}
-                fontSize="7" fontFamily="Inter, sans-serif">
-                {p.room}
-              </text>
-              {/* NOW badge */}
-              {i === activeIdx && (
-                <rect x="178" y={165 + i * 36} width="28" height="12" rx="6"
-                  fill="rgba(123,122,255,0.3)" />
-              )}
-              {i === activeIdx && (
-                <text x="192" y={174 + i * 36}
-                  fill="#7B7AFF" fontSize="6.5" fontFamily="Inter, sans-serif"
-                  fontWeight="700" textAnchor="middle">NOW</text>
-              )}
+          {/* Target Timetable Widget */}
+          <g transform="translate(14, 100)">
+            <rect width="232" height="320" rx="18" fill="#1C1B22" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            
+            {/* Header */}
+            <text x="18" y="26" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="Inter, sans-serif" letterSpacing="0.5">WEDNESDAY</text>
+            
+            {/* Chevron down */}
+            <path d="M96 17 L101 22 L106 17" stroke="#A0A0B0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+
+            {/* "NO MORE CLASSES" Badge */}
+            <rect x="136" y="12" width="78" height="18" rx="9" fill="#29283F" />
+            <text x="142" y="24" fill="#8C8BFF" fontSize="6.5" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="0.5">NO MORE CLASSES</text>
+
+            <line x1="18" y1="42" x2="214" y2="42" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+
+            {/* Period rows */}
+            {periods.map((p, i) => (
+              <g key={i}>
+                <text x="18" y={p.y + 10} fill="#9BA1A6" fontSize="8" fontFamily="Inter, sans-serif">{p.time}</text>
+                
+                <text x="76" y={p.y} fill="#8C8BFF" fontSize="6.5" fontWeight="900" fontFamily="Inter, sans-serif" letterSpacing="0.5">
+                  {p.period}
+                </text>
+                
+                {p.subjectLines.map((line, li) => (
+                  <text key={li} 
+                    x="76" 
+                    y={p.y + 14 + (li * 12.5)} 
+                    fill="#FFFFFF" 
+                    fontSize="9.5" 
+                    fontWeight="700" 
+                    fontFamily="system-ui, -apple-system, sans-serif"
+                  >
+                    {line}
+                  </text>
+                ))}
+
+                <text x="214" y={p.y + 12} fill="#9BA1A6" fontSize="8" fontFamily="Inter, sans-serif" textAnchor="end">{p.room}</text>
+              </g>
+            ))}
+
+            {/* Bottom Actions */}
+            <g transform="translate(18, 290)">
+              {/* Trash icon */}
+              <circle cx="2" cy="2" r="0.5" fill="#A0A0B0" />
+              <path d="M2.5 -1.5 H 6.5 M 1.5 0 H 7.5 M 2.5 0 V 8.5 H 6.5 V 0 M 4.5 -1.5 V 0" stroke="#9BA1A6" strokeWidth="1" fill="none"/>
+              <text x="12" y="7" fill="#9BA1A6" fontSize="6.5" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="1.2">CLEAR</text>
             </g>
-          ))}
+            
+            <text x="116" y="296" fill="#6B6B7B" fontSize="6.5" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="2" textAnchor="middle">
+              · PRIVACY SECURED ·
+            </text>
+          </g>
+
+          {/* Android Navigation Dock Area */}
+          <g transform="translate(26, 436)">
+            {[0, 1, 2, 3].map(i => (
+              <circle key={i} cx={24 + i * 53} cy="18" r="18"
+                fill={i === 0 ? 'rgba(123,122,255,0.2)' : 'rgba(255,255,255,0.06)'}
+              />
+            ))}
+          </g>
 
           {/* Bottom home bar */}
-          <rect x="90" y="468" width="60" height="4" rx="2" fill="#2A2A30" />
+          <rect x="95" y="500" width="70" height="3" rx="1.5" fill="#F0F0F5" opacity="0.6" />
 
           <defs>
-            <linearGradient id="wallGrad" x1="120" y1="10" x2="120" y2="480" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#7B7AFF" stopOpacity="0.4" />
-              <stop offset="1" stopColor="#121214" stopOpacity="0" />
+            <linearGradient id="wallGrad" x1="130" y1="0" x2="130" y2="520" gradientUnits="userSpaceOnUse">
+              <stop stopColor="rgba(123,122,255,0.6)" />
+              <stop offset="0.7" stopColor="transparent" />
             </linearGradient>
           </defs>
         </svg>
