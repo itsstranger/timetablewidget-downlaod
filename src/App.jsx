@@ -103,18 +103,22 @@ function PhoneMockup() {
                   {p.period}
                 </text>
                 
-                {p.subjectLines.map((line, li) => (
-                  <text key={li} 
-                    x="76" 
-                    y={p.y + 14 + (li * 12.5)} 
-                    fill="#FFFFFF" 
-                    fontSize="9.5" 
-                    fontWeight="700" 
-                    fontFamily="system-ui, -apple-system, sans-serif"
-                  >
-                    {line}
-                  </text>
-                ))}
+                {p.subjectLines.map((line, li) => {
+                  const isArabic = /[\u0600-\u06FF]/.test(line);
+                  return (
+                    <text key={li} 
+                      x={isArabic ? "214" : "76"} 
+                      y={p.y + 14 + (li * 12.5)} 
+                      fill="#FFFFFF" 
+                      fontSize="9.5" 
+                      fontWeight="700" 
+                      fontFamily="system-ui, -apple-system, sans-serif"
+                      textAnchor={isArabic ? "end" : "start"}
+                    >
+                      {line}
+                    </text>
+                  );
+                })}
 
                 <text x="214" y={p.y + 12} fill="#9BA1A6" fontSize="8" fontFamily="Inter, sans-serif" textAnchor="end">{p.room}</text>
               </g>
