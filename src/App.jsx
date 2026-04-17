@@ -287,7 +287,7 @@ export default function App() {
 
   useEffect(() => {
     // Fetch initial download count silently
-    fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/apk')
+    fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/apk/')
       .then(res => res.json())
       .then(data => {
         if (data && typeof data.count === 'number') {
@@ -429,9 +429,9 @@ export default function App() {
           <div
             className={`mt-5 inline-flex items-center gap-2 glass px-4 py-2 rounded-full transition-all duration-700 delay-400 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
           >
-            <Users className="w-4 h-4 text-text-primary" style={{ color: '#7B7AFF' }} />
+            <Download className="w-4 h-4 text-text-primary" style={{ color: '#7B7AFF' }} />
             <span className="text-xs font-semibold text-text-secondary">
-              Trusted by <strong className="text-text-primary">{downloads > 0 ? downloads : '...'}</strong> students
+              <strong className="text-text-primary">{downloads > 0 ? downloads : '...'}</strong> Downloads
             </span>
           </div>
 
