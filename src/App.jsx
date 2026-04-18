@@ -407,10 +407,13 @@ export default function App() {
               download="dhTimetable.apk"
               id="download-apk-btn-stable"
               onClick={handleDownloadClick}
-              className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
+              className="relative btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
             >
               <Download className="w-5 h-5" />
               Download Stable
+              <div className="absolute -top-2.5 -right-2 bg-fuchsia-500 text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shadow-lg border border-fuchsia-400 rotate-12 animate-pulse">
+                New Update
+              </div>
             </a>
 
             {showBeta && (
@@ -491,6 +494,129 @@ export default function App() {
           </div>
         </section>
 
+        {/* ──────────────────────── WALKTHROUGH ──────────────────────── */}
+        <section id="walkthrough" className="px-5 py-16 sm:py-24 max-w-5xl mx-auto border-t border-white/5">
+          <div className="text-center mb-12 sm:mb-16">
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#7B7AFF' }}>
+              Deep Dive
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-black text-text-primary leading-tight">
+              Functions & <span className="text-gradient">Widgets</span>
+            </h2>
+            <p className="mt-4 text-sm sm:text-base text-text-secondary max-w-2xl mx-auto leading-relaxed">
+              A complete walkthrough of the app’s functions and a breakdown of the two specialized home-screen widgets included.
+            </p>
+          </div>
+
+          <div className="space-y-16">
+            {/* 1. Core App Experience */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-6 flex items-center justify-center sm:justify-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#7B7AFF]/10 border border-[#7B7AFF]/20 flex items-center justify-center text-[#7B7AFF] text-sm hidden sm:flex">1</div>
+                1. The Core App Experience
+              </h3>
+              <div className="grid sm:grid-cols-3 gap-5 text-left">
+                <div className="glass rounded-3xl p-6">
+                  <h4 className="font-bold text-text-primary mb-3 text-sm">A. Atmospheric Timeline</h4>
+                  <ul className="space-y-3 text-sm text-text-secondary leading-relaxed">
+                    <li><strong className="text-text-primary">Live Tracking:</strong> Auto-highlights your current activity with a "LIVE" indicator and countdown bar.</li>
+                    <li><strong className="text-text-primary">Vertical Flow:</strong> Upcoming periods are linked by a sleek vertical timeline layout.</li>
+                    <li><strong className="text-text-primary">Quick Scan:</strong> Tap the weekday selector to instantly preview tomorrow or later.</li>
+                  </ul>
+                </div>
+                <div className="glass rounded-3xl p-6">
+                  <h4 className="font-bold text-text-primary mb-3 text-sm">B. Schedule Editor</h4>
+                  <ul className="space-y-3 text-sm text-text-secondary leading-relaxed">
+                    <li><strong className="text-text-primary">Drag-and-Drop:</strong> Long-press to logically rearrange any subject smoothly.</li>
+                    <li><strong className="text-text-primary">Rapid Entry:</strong> Tap to edit details in-line without any complex separate menus.</li>
+                    <li><strong className="text-text-primary">Smart Sync:</strong> Changes instantly auto-sync to your widgets in real-time.</li>
+                  </ul>
+                </div>
+                <div className="glass rounded-3xl p-6">
+                  <h4 className="font-bold text-text-primary mb-3 text-sm">C. Onboarding & Settings</h4>
+                  <ul className="space-y-3 text-sm text-text-secondary leading-relaxed">
+                    <li><strong className="text-text-primary">CSV Import:</strong> Skip manual entry completely by uploading your schedule directly.</li>
+                    <li><strong className="text-text-primary">Customization:</strong> Toggle 12h/24h formats, class notifications, and "Interface Scale".</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. The Widgets */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-6 flex items-center justify-center sm:justify-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 flex items-center justify-center text-fuchsia-400 text-sm hidden sm:flex">2</div>
+                2. Your Home Screen Command Center
+              </h3>
+              <p className="text-sm text-text-secondary mb-6 text-center sm:text-left">The app provides two distinct widgets, each serving a specific psychological use case:</p>
+              <div className="grid sm:grid-cols-2 gap-5 text-left">
+                <div className="glass rounded-3xl p-6 sm:border-l-4 border-l-fuchsia-500/50">
+                  <h4 className="font-bold text-text-primary mb-2 text-base">Widget #1: The Full Timeline</h4>
+                  <p className="text-xs text-fuchsia-400 font-semibold mb-4 uppercase tracking-wider">List View</p>
+                  <p className="text-sm text-text-secondary leading-relaxed mb-4">
+                    <strong className="text-text-primary">The Function:</strong> A scrollable list of your entire day’s schedule.
+                  </p>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    <strong className="text-text-primary">The Use Case:</strong> Best for users who want the "Big Picture". Placed on a secondary home screen, it details your 8:00 AM to 5:00 PM day without unlocking the app.
+                  </p>
+                </div>
+                <div className="glass rounded-3xl p-6 sm:border-l-4 border-l-[#7B7AFF]/50">
+                  <h4 className="font-bold text-text-primary mb-2 text-base">Widget #2: "Now & Next"</h4>
+                  <p className="text-xs text-[#7B7AFF] font-semibold mb-4 uppercase tracking-wider">Focus View</p>
+                  <p className="text-sm text-text-secondary leading-relaxed mb-4">
+                    <strong className="text-text-primary">The Function:</strong> A high-contrast display showing exactly what you are doing right now and what happens immediately after.
+                  </p>
+                  <p className="text-sm text-text-secondary leading-relaxed">
+                    <strong className="text-text-primary">The Use Case:</strong> For the high-pressure user rushing between classes. Minimizes cognitive load by filtering out the rest of the day.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Summary of Use Cases */}
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-6 flex items-center gap-3 justify-center sm:justify-start">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-sm hidden sm:flex">3</div>
+                3. Summary of Use Cases
+              </h3>
+              <div className="glass rounded-3xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[500px]">
+                    <thead>
+                      <tr className="bg-white/5 border-b border-white/10">
+                        <th className="p-4 sm:p-5 text-sm font-semibold text-text-primary w-1/3">Feature</th>
+                        <th className="p-4 sm:p-5 text-sm font-semibold text-text-primary">Best For...</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-sm text-text-secondary divide-y divide-white/5">
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="p-4 sm:p-5 font-semibold text-text-primary">CSV Upload</td>
+                        <td className="p-4 sm:p-5">New users migrating from a spreadsheet or school portal.</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="p-4 sm:p-5 font-semibold text-text-primary">"Now & Next" Widget</td>
+                        <td className="p-4 sm:p-5">Between-class transitions where speed is everything.</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="p-4 sm:p-5 font-semibold text-text-primary">Timeline Progress Bar</td>
+                        <td className="p-4 sm:p-5">Knowing exactly how much time is left in a boring lecture or meeting.</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="p-4 sm:p-5 font-semibold text-text-primary">Drag-and-Drop Editor</td>
+                        <td className="p-4 sm:p-5">Quick adjustments when a class is canceled or moved.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <p className="text-center text-sm text-text-secondary mt-10 italic max-w-2xl mx-auto px-4">
+                With these tools, dhTimetable ensures you spend less time looking at your schedule and more time being present in your day.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
         {/* ──────────────────────── HOW IT WORKS ──────────────────────── */}
         <section id="how-it-works" className="px-5 py-16 sm:py-24">
           <div className="max-w-xl mx-auto">
@@ -548,10 +674,13 @@ export default function App() {
                     download="dhTimetable.apk"
                     id="download-apk-btn-2-stable"
                     onClick={handleDownloadClick}
-                    className="btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
+                    className="relative btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
                   >
                     <Download className="w-5 h-5" />
                     Download Stable
+                    <div className="absolute -top-2.5 -right-2 bg-fuchsia-500 text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shadow-lg border border-fuchsia-400 rotate-12 animate-pulse">
+                      New Update
+                    </div>
                   </a>
                   {showBeta && (
                     <a
