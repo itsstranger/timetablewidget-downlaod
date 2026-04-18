@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Download, Shield, Sparkles, Zap, ChevronRight,
   FileDown, Upload, LayoutGrid, ExternalLink, Star,
-  MessageSquare, Mail, Send, Users, Code
+  MessageSquare, Mail, Send, Users, Code, AlertCircle
 } from 'lucide-react';
 
 /* ─── Phone Mockup SVG Widget ─── */
@@ -450,12 +450,19 @@ export default function App() {
             </span>
           </div>
 
-          <p
-            className={`mt-4 text-xs transition-all duration-700 delay-500 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}
-            style={{ color: '#6B6B7B' }}
-          >
-            Free · Android 8+ · ~10 MB
-          </p>
+          <div className={`mt-4 flex flex-col items-center gap-3 transition-all duration-700 delay-500 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}>
+            <p className="text-xs" style={{ color: '#6B6B7B' }}>
+              Free · Android 8+ · ~10 MB
+            </p>
+            
+            {/* Update Notice */}
+            <div className="flex items-start justify-center text-left sm:items-center sm:text-center gap-2.5 bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 rounded-xl max-w-sm mt-1 mx-4">
+              <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5 sm:mt-0" />
+              <p className="text-xs text-amber-200/90 leading-relaxed font-medium">
+                <strong>Updating?</strong> You must uninstall your previous version before installing a new update.
+              </p>
+            </div>
+          </div>
 
           {/* Phone Mockup */}
           <div
@@ -570,6 +577,16 @@ export default function App() {
                       I'm Feeling Lucky
                     </a>
                   )}
+                </div>
+
+                {/* Secondary Update Notice */}
+                <div className="mt-6 flex justify-center">
+                  <div className="flex items-start justify-center text-left sm:items-center sm:text-center gap-2.5 bg-amber-500/10 border border-amber-500/20 px-4 py-2.5 rounded-xl max-w-sm">
+                    <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5 sm:mt-0" />
+                    <p className="text-xs text-amber-200/90 leading-relaxed font-medium">
+                      <strong>Updating?</strong> You must uninstall your previous version before installing a new update.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
