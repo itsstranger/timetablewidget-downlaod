@@ -5,7 +5,104 @@ import {
   MessageSquare, Mail, Send, Users, Code, AlertCircle
 } from 'lucide-react';
 
-/* ─── Phone Mockup SVG Widget ─── */
+/* ─── "Now & Next" Phone Mockup SVG Widget ─── */
+function PhoneMockupFocus() {
+  return (
+    <div className="relative flex justify-center items-end h-full animate-float" style={{ animationDelay: '0.2s' }}>
+      {/* Glow underneath the phone */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-20 rounded-full"
+        style={{ background: 'radial-gradient(ellipse, rgba(140,139,255,0.30) 0%, transparent 70%)' }} />
+
+      {/* Phone shell (Android Pixel Concept) */}
+      <div className="relative z-10 w-[250px] sm:w-[270px]" style={{ filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.7))' }}>
+        <svg viewBox="0 0 260 520" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+          {/* Phone body */}
+          <rect x="2" y="2" width="256" height="516" rx="28" fill="#121214" stroke="#2A2A30" strokeWidth="2.5" />
+          <rect x="8" y="8" width="244" height="504" rx="22" fill="#0A0A0C" />
+          <circle cx="130" cy="24" r="5" fill="#040405" />
+          
+          {/* Status bar */}
+          <text x="24" y="28" fill="#F0F0F5" fontSize="9" fontFamily="Inter, sans-serif" fontWeight="600">10:45</text>
+          <g transform="translate(195, 20)">
+            <path d="M2.5 7.5 L5 0 L7.5 7.5 Z" fill="#F0F0F5" />
+            <path d="M8.5 7.5 L11 0 L13.5 7.5 Z" fill="#F0F0F5" />
+            <path d="M19 1 C21 1 23 2 24.5 3 C25.5 4 25.5 5 24.5 6 L19 11 L13.5 6 C12.5 5 12.5 4 13.5 3 C15 2 17 1 19 1 Z" fill="#F0F0F5" />
+            <rect x="29" y="1.5" width="14" height="7.5" rx="1.5" fill="none" stroke="#F0F0F5" strokeWidth="1" />
+            <rect x="30.5" y="3" width="9" height="4.5" rx="0.5" fill="#F0F0F5" />
+            <rect x="44" y="3.5" width="2" height="3.5" rx="0.5" fill="#F0F0F5" />
+          </g>
+
+          {/* Background Wallpaper */}
+          <rect x="8" y="8" width="244" height="504" rx="22" fill="url(#wallGrad)" opacity="0.6" />
+          
+          {/* Search bar */}
+          <rect x="20" y="44" width="220" height="36" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+          <g transform="translate(36, 54)">
+            <path d="M7.7 4.2C7.7 3.8 7.6 3.5 7.6 3.1H4.1V5.2H6.2C6.1 5.8 5.7 6.4 5.2 6.8V8.1H6.4C7.1 7.4 7.7 6.0 7.7 4.2Z" fill="#4285F4" />
+            <path d="M4.1 7.9C5.1 7.9 6.0 7.5 6.4 7.0L5.2 5.7C4.8 5.9 4.5 6.0 4.1 6.0C3.3 6.0 2.5 5.5 2.2 4.7H0.9V6.0C1.5 7.2 2.7 7.9 4.1 7.9Z" fill="#34A853" />
+            <path d="M2.2 4.7C2.1 4.5 2.1 4.2 2.1 3.9C2.1 3.7 2.1 3.4 2.2 3.2V1.9H0.9C0.6 2.5 0.5 3.2 0.5 3.9C0.5 4.7 0.6 5.4 0.9 6.0L2.2 4.7Z" fill="#FBBC05" />
+            <path d="M4.1 1.9C4.6 1.9 5.1 2.1 5.5 2.5L6.5 1.5C6.0 1.0 5.1 0.6 4.1 0.6C2.7 0.6 1.5 1.4 0.9 2.6L2.2 3.9C2.5 3.1 3.3 1.9 4.1 1.9Z" fill="#EA4335" />
+          </g>
+
+          {/* FOCUS WIDGET */}
+          <g transform="translate(14, 100)">
+            {/* Widget Base Surface */}
+            <rect width="232" height="236" rx="32" fill="#2A2B32" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+
+            {/* NOW Badge */}
+            <circle cx="26" cy="30" r="3.5" fill="#3EE58E" />
+            <text x="35" y="32.5" fill="#D0D0D5" fontSize="8" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="1">NOW</text>
+
+            {/* Time Pill */}
+            <rect x="166" y="22" width="48" height="18" rx="9" fill="#1C1D22" />
+            <text x="171" y="34" fill="#D0D0D5" fontSize="8" fontFamily="Inter, sans-serif">10:45 AM</text>
+
+            {/* Title & Subtitle */}
+            <text x="22" y="68" fill="#FFFFFF" fontSize="21" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="-0.5">Quantum Physics</text>
+            <path d="M 27 77 C 25 77 24 78 24 80 C 24 83 27 86 27 86 C 27 86 30 83 30 80 C 30 78 29 77 27 77 Z M 27 81.5 C 26 81.5 25.5 81 25.5 80 C 25.5 79 26 78.5 27 78.5 C 28 78.5 28.5 79 28.5 80 C 28.5 81 28 81.5 27 81.5 Z" fill="#8C8BFF" />
+            <text x="36" y="85" fill="#8C8BFF" fontSize="10" fontWeight="600" fontFamily="Inter, sans-serif">Room 402 - Science Block</text>
+
+            {/* Progress Bar Region */}
+            <text x="22" y="117" fill="#A0A0B0" fontSize="8.5" fontFamily="Inter, sans-serif">Started 10:00</text>
+            <text x="210" y="117" fill="#A0A0B0" fontSize="8.5" fontFamily="Inter, sans-serif" textAnchor="end">Ends 11:30</text>
+            
+            <rect x="22" y="124" width="188" height="5" rx="2.5" fill="#1C1D22" />
+            <rect x="22" y="124" width="112" height="5" rx="2.5" fill="#8C8BFF" />
+
+            <text x="210" y="142" fill="#8C8BFF" fontSize="8.5" fontFamily="Inter, sans-serif" textAnchor="end">45 mins left</text>
+            
+            {/* Divider shadow hack via rect */}
+            <rect x="22" y="160" width="188" height="1" fill="rgba(0,0,0,0.1)" />
+
+            {/* NEXT UP Block */}
+            <circle cx="34" cy="192" r="14" fill="#1C1D22" />
+            {/* Clock icon */}
+            <circle cx="34" cy="192" r="6" fill="none" stroke="#D0D0D5" strokeWidth="1.5" />
+            <path d="M 34 189 V 192 L 36 193.5" stroke="#D0D0D5" fill="none" strokeWidth="1.5" />
+
+            <text x="56" y="184" fill="#A0A0B0" fontSize="7" fontWeight="bold" fontFamily="Inter, sans-serif" letterSpacing="1.2">NEXT UP • 12:00 PM</text>
+            <text x="56" y="196" fill="#FFFFFF" fontSize="11" fontWeight="bold" fontFamily="Inter, sans-serif">Advanced Calculus</text>
+            <text x="56" y="208" fill="#A0A0B0" fontSize="8" fontFamily="Inter, sans-serif">Room 105 - Main Building</text>
+          </g>
+
+          {/* Nav Dock */}
+          <g transform="translate(26, 436)">
+            {[0, 1, 2, 3].map(i => (
+              <circle key={i} cx={24 + i * 53} cy="18" r="18"
+                fill={i === 0 ? 'rgba(140,139,255,0.2)' : 'rgba(255,255,255,0.06)'}
+              />
+            ))}
+          </g>
+          {/* Bottom home bar */}
+          <rect x="90" y="492" width="80" height="4" rx="2" fill="#FFFFFF" opacity="0.4" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/* ─── List View Phone Mockup SVG Widget ─── */
+
 function PhoneMockup() {
   const periods = [
     {
@@ -467,11 +564,17 @@ export default function App() {
             </div>
           </div>
 
-          {/* Phone Mockup */}
+          {/* Phone Mockups Container */}
           <div
-            className={`mt-16 sm:mt-20 h-[380px] sm:h-[440px] w-full flex justify-center transition-all duration-1000 delay-500 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            className={`mt-16 sm:mt-24 w-full flex flex-col md:flex-row justify-center items-center gap-12 md:gap-16 transition-all duration-1000 delay-500 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
-            <PhoneMockup />
+            <div className="h-[380px] sm:h-[440px] flex-shrink-0 z-20">
+              <PhoneMockupFocus />
+            </div>
+            
+            <div className="h-[380px] sm:h-[440px] flex-shrink-0 hidden md:block opacity-60 hover:opacity-100 transition-opacity duration-500 hover:z-30 relative md:-ml-8 lg:ml-0 group">
+              <PhoneMockup />
+            </div>
           </div>
         </section>
 
