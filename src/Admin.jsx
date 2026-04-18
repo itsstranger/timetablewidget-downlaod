@@ -184,7 +184,9 @@ export default function Admin() {
 
       const base64Content = await convertToBase64(file);
       const repo = 'itsstranger/timetablewidget-downlaod';
-      const filePath = versionType === 'beta' ? 'public/dhTimetableBeta.apk' : 'public/dhTimetable.apk';
+      let filePath = 'public/dhTimetable.apk';
+      if (versionType === 'beta') filePath = 'public/dhTimetableBeta.apk';
+      if (versionType === 'test') filePath = 'public/dhTimetableTest.apk';
       const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
       const getRes = await fetch(`${url}?ref=main&t=${Date.now()}`, {
@@ -329,7 +331,7 @@ export default function Admin() {
             {/* Version Type Selector */}
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">Target Upload Version</label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => setVersionType('stable')}
                   className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
@@ -351,6 +353,17 @@ export default function Admin() {
                 >
                   <Code className="w-4 h-4" />
                   Beta Channel
+                </button>
+                <button
+                  onClick={() => setVersionType('test')}
+                  className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
+                    versionType === 'test' 
+                      ? 'bg-fuchsia-600/20 border-fuchsia-500 text-fuchsia-400' 
+                      : 'bg-[#0D0D0F] border-white/10 text-text-secondary hover:bg-white/5'
+                  }`}
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  Test (Lucky)
                 </button>
               </div>
             </div>

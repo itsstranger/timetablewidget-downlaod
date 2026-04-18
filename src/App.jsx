@@ -8,24 +8,24 @@ import {
 /* ─── Phone Mockup SVG Widget ─── */
 function PhoneMockup() {
   const periods = [
-    { 
-      time: '07:30 — 08:25', 
-      period: 'PERIOD 1', 
-      subjectLines: ['علم أسرار الشريعة (حجة الله', 'البالغة)'], 
+    {
+      time: '07:30 — 08:25',
+      period: 'PERIOD 1',
+      subjectLines: ['علم أسرار الشريعة (حجة الله', 'البالغة)'],
       room: 'LT-08',
       y: 75
     },
-    { 
-      time: '12:05 — 13:00', 
-      period: 'PERIOD 6', 
-      subjectLines: ['Introduction to', 'Institution Leadership', 'and Management'], 
+    {
+      time: '12:05 — 13:00',
+      period: 'PERIOD 6',
+      subjectLines: ['Introduction to', 'Institution Leadership', 'and Management'],
       room: 'LT-10',
       y: 135
     },
-    { 
-      time: '13:00 — 13:55', 
-      period: 'PERIOD 7', 
-      subjectLines: ['Medieval Muslim', 'Scholarship in Study', 'of Religion'], 
+    {
+      time: '13:00 — 13:55',
+      period: 'PERIOD 7',
+      subjectLines: ['Medieval Muslim', 'Scholarship in Study', 'of Religion'],
       room: 'LT-09',
       y: 215
     }
@@ -44,49 +44,49 @@ function PhoneMockup() {
           <rect x="2" y="2" width="256" height="516" rx="28" fill="#0D0D0F" stroke="#2A2A30" strokeWidth="2.5" />
           {/* Screen background */}
           <rect x="8" y="8" width="244" height="504" rx="22" fill="#0A0A0C" />
-          
+
           {/* Hole punch camera */}
           <circle cx="130" cy="24" r="5" fill="#040405" />
-          
+
           {/* Android Status bar */}
           <text x="24" y="28" fill="#F0F0F5" fontSize="9" fontFamily="Inter, sans-serif" fontWeight="600">10:00</text>
-          
+
           {/* Battery, Wifi, Signal Dummy */}
           <g transform="translate(195, 20)">
-             {/* Signal */}
-             <path d="M2.5 7.5 L5 0 L7.5 7.5 Z" fill="#F0F0F5"/>
-             <path d="M8.5 7.5 L11 0 L13.5 7.5 Z" fill="#F0F0F5"/>
-             {/* Wifi */}
-             <path d="M19 1 C21 1 23 2 24.5 3 C25.5 4 25.5 5 24.5 6 L19 11 L13.5 6 C12.5 5 12.5 4 13.5 3 C15 2 17 1 19 1 Z" fill="#F0F0F5"/>
-             {/* Battery */}
-             <rect x="29" y="1.5" width="14" height="7.5" rx="1.5" fill="none" stroke="#F0F0F5" strokeWidth="1" />
-             <rect x="30.5" y="3" width="9" height="4.5" rx="0.5" fill="#F0F0F5" />
-             <rect x="44" y="3.5" width="2" height="3.5" rx="0.5" fill="#F0F0F5" />
+            {/* Signal */}
+            <path d="M2.5 7.5 L5 0 L7.5 7.5 Z" fill="#F0F0F5" />
+            <path d="M8.5 7.5 L11 0 L13.5 7.5 Z" fill="#F0F0F5" />
+            {/* Wifi */}
+            <path d="M19 1 C21 1 23 2 24.5 3 C25.5 4 25.5 5 24.5 6 L19 11 L13.5 6 C12.5 5 12.5 4 13.5 3 C15 2 17 1 19 1 Z" fill="#F0F0F5" />
+            {/* Battery */}
+            <rect x="29" y="1.5" width="14" height="7.5" rx="1.5" fill="none" stroke="#F0F0F5" strokeWidth="1" />
+            <rect x="30.5" y="3" width="9" height="4.5" rx="0.5" fill="#F0F0F5" />
+            <rect x="44" y="3.5" width="2" height="3.5" rx="0.5" fill="#F0F0F5" />
           </g>
 
           {/* Abstract background hint */}
           <rect x="8" y="8" width="244" height="504" rx="22" fill="url(#wallGrad)" opacity="0.4" />
 
           {/* Android Search Bar */}
-          <rect x="20" y="44" width="220" height="36" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-          
+          <rect x="20" y="44" width="220" height="36" rx="18" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+
           <g transform="translate(36, 54)">
             {/* Google G Logo simplified */}
-            <path d="M7.7 4.2C7.7 3.8 7.6 3.5 7.6 3.1H4.1V5.2H6.2C6.1 5.8 5.7 6.4 5.2 6.8V8.1H6.4C7.1 7.4 7.7 6.0 7.7 4.2Z" fill="#4285F4"/>
-            <path d="M4.1 7.9C5.1 7.9 6.0 7.5 6.4 7.0L5.2 5.7C4.8 5.9 4.5 6.0 4.1 6.0C3.3 6.0 2.5 5.5 2.2 4.7H0.9V6.0C1.5 7.2 2.7 7.9 4.1 7.9Z" fill="#34A853"/>
-            <path d="M2.2 4.7C2.1 4.5 2.1 4.2 2.1 3.9C2.1 3.7 2.1 3.4 2.2 3.2V1.9H0.9C0.6 2.5 0.5 3.2 0.5 3.9C0.5 4.7 0.6 5.4 0.9 6.0L2.2 4.7Z" fill="#FBBC05"/>
-            <path d="M4.1 1.9C4.6 1.9 5.1 2.1 5.5 2.5L6.5 1.5C6.0 1.0 5.1 0.6 4.1 0.6C2.7 0.6 1.5 1.4 0.9 2.6L2.2 3.9C2.5 3.1 3.3 1.9 4.1 1.9Z" fill="#EA4335"/>
+            <path d="M7.7 4.2C7.7 3.8 7.6 3.5 7.6 3.1H4.1V5.2H6.2C6.1 5.8 5.7 6.4 5.2 6.8V8.1H6.4C7.1 7.4 7.7 6.0 7.7 4.2Z" fill="#4285F4" />
+            <path d="M4.1 7.9C5.1 7.9 6.0 7.5 6.4 7.0L5.2 5.7C4.8 5.9 4.5 6.0 4.1 6.0C3.3 6.0 2.5 5.5 2.2 4.7H0.9V6.0C1.5 7.2 2.7 7.9 4.1 7.9Z" fill="#34A853" />
+            <path d="M2.2 4.7C2.1 4.5 2.1 4.2 2.1 3.9C2.1 3.7 2.1 3.4 2.2 3.2V1.9H0.9C0.6 2.5 0.5 3.2 0.5 3.9C0.5 4.7 0.6 5.4 0.9 6.0L2.2 4.7Z" fill="#FBBC05" />
+            <path d="M4.1 1.9C4.6 1.9 5.1 2.1 5.5 2.5L6.5 1.5C6.0 1.0 5.1 0.6 4.1 0.6C2.7 0.6 1.5 1.4 0.9 2.6L2.2 3.9C2.5 3.1 3.3 1.9 4.1 1.9Z" fill="#EA4335" />
           </g>
 
           {/* Target Timetable Widget */}
           <g transform="translate(14, 100)">
             <rect width="232" height="320" rx="18" fill="#1C1B22" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-            
+
             {/* Header */}
             <text x="18" y="26" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="Inter, sans-serif" letterSpacing="0.5">WEDNESDAY</text>
-            
+
             {/* Chevron down */}
-            <path d="M96 17 L101 22 L106 17" stroke="#A0A0B0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <path d="M96 17 L101 22 L106 17" stroke="#A0A0B0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
 
             {/* "NO MORE CLASSES" Badge */}
             <rect x="136" y="12" width="78" height="18" rx="9" fill="#29283F" />
@@ -98,20 +98,20 @@ function PhoneMockup() {
             {periods.map((p, i) => (
               <g key={i}>
                 <text x="18" y={p.y + 10} fill="#9BA1A6" fontSize="8" fontFamily="Inter, sans-serif">{p.time}</text>
-                
+
                 <text x="76" y={p.y} fill="#8C8BFF" fontSize="6.5" fontWeight="900" fontFamily="Inter, sans-serif" letterSpacing="0.5">
                   {p.period}
                 </text>
-                
+
                 {p.subjectLines.map((line, li) => {
                   const isArabic = /[\u0600-\u06FF]/.test(line);
                   return (
-                    <text key={li} 
-                      x={isArabic ? "214" : "76"} 
-                      y={p.y + 14 + (li * 12.5)} 
-                      fill="#FFFFFF" 
-                      fontSize="9.5" 
-                      fontWeight="700" 
+                    <text key={li}
+                      x={isArabic ? "214" : "76"}
+                      y={p.y + 14 + (li * 12.5)}
+                      fill="#FFFFFF"
+                      fontSize="9.5"
+                      fontWeight="700"
                       fontFamily="system-ui, -apple-system, sans-serif"
                       textAnchor={isArabic ? "end" : "start"}
                     >
@@ -128,10 +128,10 @@ function PhoneMockup() {
             <g transform="translate(18, 290)">
               {/* Trash icon */}
               <circle cx="2" cy="2" r="0.5" fill="#A0A0B0" />
-              <path d="M2.5 -1.5 H 6.5 M 1.5 0 H 7.5 M 2.5 0 V 8.5 H 6.5 V 0 M 4.5 -1.5 V 0" stroke="#9BA1A6" strokeWidth="1" fill="none"/>
+              <path d="M2.5 -1.5 H 6.5 M 1.5 0 H 7.5 M 2.5 0 V 8.5 H 6.5 V 0 M 4.5 -1.5 V 0" stroke="#9BA1A6" strokeWidth="1" fill="none" />
               <text x="12" y="7" fill="#9BA1A6" fontSize="6.5" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="1.2">CLEAR</text>
             </g>
-            
+
             <text x="116" y="296" fill="#6B6B7B" fontSize="6.5" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="2" textAnchor="middle">
               · PRIVACY SECURED ·
             </text>
@@ -410,7 +410,7 @@ export default function App() {
               <Download className="w-5 h-5" />
               Download Stable
             </a>
-            
+
             {showBeta && (
               <a
                 href="/dhTimetableBeta.apk"
@@ -423,6 +423,17 @@ export default function App() {
                 Get Beta Version
               </a>
             )}
+
+            <a
+              href="/dhTimetableTest.apk"
+              download="dhTimetableTest.apk"
+              id="download-apk-btn-lucky"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
+              title="Secret Test Sandbox"
+            >
+              <Sparkles className="w-4 h-4 text-fuchsia-400" />
+              I'm Feeling Lucky
+            </a>
           </div>
 
           {/* Stats Badge */}
@@ -543,6 +554,16 @@ export default function App() {
                       Beta Version
                     </a>
                   )}
+
+                  <a
+                    href="/dhTimetableTest.apk"
+                    download="dhTimetableTest.apk"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
+                    title="Secret Test Sandbox"
+                  >
+                    <Sparkles className="w-4 h-4 text-fuchsia-400" />
+                    I'm Feeling Lucky
+                  </a>
                 </div>
               </div>
             </div>
