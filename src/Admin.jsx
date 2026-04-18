@@ -415,7 +415,9 @@ export default function Admin() {
 
             {/* Drag and Drop Zone */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary mb-2">Upload New {versionType === 'stable' ? 'Stable' : 'Beta'} APK</label>
+              <label className="block text-sm font-semibold text-text-primary mb-2">
+                Upload New {versionType.charAt(0).toUpperCase() + versionType.slice(1)} APK
+              </label>
               <div
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -475,7 +477,7 @@ export default function Admin() {
             {/* Submit Button */}
             <button
               onClick={uploadToBackend}
-              disabled={!username || !password || !file || status === 'loading' || isTogglingBeta}
+              disabled={!username || !password || !file || status === 'loading' || isTogglingContent}
               className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-xl py-3.5 font-bold text-white transition-all shadow-glow"
             >
               {status === 'loading' ? (
@@ -484,7 +486,7 @@ export default function Admin() {
                   Deploying...
                 </>
               ) : (
-                `Deploy New ${versionType === 'stable' ? 'Stable' : 'Beta'} APK`
+                `Deploy New ${versionType.charAt(0).toUpperCase() + versionType.slice(1)} APK`
               )}
             </button>
 
