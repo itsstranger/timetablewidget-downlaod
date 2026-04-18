@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2, Settings } from 'lucide-react';
+import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2, Settings, Sparkles } from 'lucide-react';
 
 export default function Admin() {
   const [username, setUsername] = useState('');
@@ -11,9 +11,10 @@ export default function Admin() {
   const [errorMsg, setErrorMsg] = useState('');
   const [isDragging, setIsDragging] = useState(false);
 
-  // Beta toggle state
+  // Feature toggles state
   const [showBeta, setShowBeta] = useState(false);
-  const [isTogglingBeta, setIsTogglingBeta] = useState(false);
+  const [showLucky, setShowLucky] = useState(false);
+  const [isTogglingContent, setIsTogglingContent] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('admin_user');
@@ -25,8 +26,9 @@ export default function Admin() {
     fetch(`/config.json?v=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
-        if (data && typeof data.showBeta !== 'undefined') {
-          setShowBeta(data.showBeta);
+        if (data) {
+          if (typeof data.showBeta !== 'undefined') setShowBeta(data.showBeta);
+          if (typeof data.showLucky !== 'undefined') setShowLucky(data.showLucky);
         }
       })
       .catch(() => {});
@@ -105,19 +107,18 @@ export default function Admin() {
     return authData.token;
   };
 
-  const toggleBetaAccess = async () => {
+  const updateConfigValue = async (key, newValue) => {
     if (!username || !password) {
       setStatus('error');
-      setErrorMsg('Please enter your admin credentials to toggle beta access.');
+      setErrorMsg(`Please enter your admin credentials to toggle this setting.`);
       return;
     }
-    setIsTogglingBeta(true);
+    setIsTogglingContent(true);
     setStatus('idle');
     setErrorMsg('');
 
     try {
       const token = await getAuthToken();
-      const newShowBetaState = !showBeta;
       const repo = 'itsstranger/timetablewidget-downlaod';
       const filePath = 'public/config.json';
       const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
@@ -132,17 +133,28 @@ export default function Admin() {
       });
       
       let sha = null;
+      let existingConfig = {};
       if (getRes.ok) {
          const fileData = await getRes.json();
          sha = fileData.sha;
+         try {
+             // GitHub fileData.content is Base64 encoded
+             const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+             existingConfig = JSON.parse(decoded);
+         } catch(e) {
+             console.error("Could not parse existing config, creating new.");
+         }
       }
 
+      // Merge new value into existing config
+      const updatedConfig = { ...existingConfig, [key]: newValue };
+      
       // Convert json to base64 securely resolving utf-8
-      const jsonContent = JSON.stringify({ showBeta: newShowBetaState }, null, 2);
+      const jsonContent = JSON.stringify(updatedConfig, null, 2);
       const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
 
       const bodyPayload = {
-        message: `Toggle Beta Access to ${newShowBetaState ? 'ON' : 'OFF'} via Admin Portal`,
+        message: `Toggle ${key} to ${newValue ? 'ON' : 'OFF'} via Admin Portal`,
         content: base64Content,
         branch: 'main'
       };
@@ -163,14 +175,16 @@ export default function Admin() {
          throw new Error(err.message || 'Failed to update config.json on GitHub');
       }
 
-      setShowBeta(newShowBetaState);
+      if (key === 'showBeta') setShowBeta(newValue);
+      if (key === 'showLucky') setShowLucky(newValue);
+      
       setStatus('success');
     } catch (err) {
       console.error(err);
       setStatus('error');
       setErrorMsg(err.message);
     } finally {
-      setIsTogglingBeta(false);
+      setIsTogglingContent(false);
     }
   };
 
@@ -297,7 +311,9 @@ export default function Admin() {
             </div>
 
             {/* Feature Flags Section */}
-            <div className="bg-[#121214] border border-[#2a2a30] rounded-2xl p-5">
+            <div className="bg-[#121214] border border-[#2a2a30] rounded-2xl p-5 space-y-5">
+              
+              {/* Beta Toggle */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex flex-shrink-0 items-center justify-center">
@@ -309,10 +325,9 @@ export default function Admin() {
                   </div>
                 </div>
                 
-                {/* Custom Toggle Switch */}
                 <button
-                  onClick={toggleBetaAccess}
-                  disabled={isTogglingBeta || status === 'loading'}
+                  onClick={() => updateConfigValue('showBeta', !showBeta)}
+                  disabled={isTogglingContent || status === 'loading'}
                   className={`relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-50 ${
                     showBeta ? 'bg-orange-500' : 'bg-[#2a2a30]'
                   }`}
@@ -324,6 +339,36 @@ export default function Admin() {
                   />
                 </button>
               </div>
+
+              <hr className="border-[#2a2a30] opacity-50" />
+
+              {/* Lucky/Test Toggle */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 flex flex-shrink-0 items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-fuchsia-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-text-primary">Enable "I'm Feeling Lucky"</h3>
+                    <p className="text-xs text-text-muted">Show the secret test build download button.</p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => updateConfigValue('showLucky', !showLucky)}
+                  disabled={isTogglingContent || status === 'loading'}
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-50 ${
+                    showLucky ? 'bg-fuchsia-500' : 'bg-[#2a2a30]'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      showLucky ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
             </div>
 
             <hr className="border-t border-[#2a2a30]" />

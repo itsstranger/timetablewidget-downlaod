@@ -279,6 +279,7 @@ export default function App() {
   const [heroVisible, setHeroVisible] = useState(false);
   const [downloads, setDownloads] = useState(0);
   const [showBeta, setShowBeta] = useState(false);
+  const [showLucky, setShowLucky] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
@@ -301,6 +302,7 @@ export default function App() {
       .then(res => res.json())
       .then(data => {
         if (data && data.showBeta) setShowBeta(true);
+        if (data && data.showLucky) setShowLucky(true);
       })
       .catch(() => { });
   }, []);
@@ -424,16 +426,18 @@ export default function App() {
               </a>
             )}
 
-            <a
-              href="/dhTimetableTest.apk"
-              download="dhTimetableTest.apk"
-              id="download-apk-btn-lucky"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
-              title="Secret Test Sandbox"
-            >
-              <Sparkles className="w-4 h-4 text-fuchsia-400" />
-              I'm Feeling Lucky
-            </a>
+            {showLucky && (
+              <a
+                href="/dhTimetableTest.apk"
+                download="dhTimetableTest.apk"
+                id="download-apk-btn-lucky"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
+                title="Secret Test Sandbox"
+              >
+                <Sparkles className="w-4 h-4 text-fuchsia-400" />
+                I'm Feeling Lucky
+              </a>
+            )}
           </div>
 
           {/* Stats Badge */}
@@ -555,15 +559,17 @@ export default function App() {
                     </a>
                   )}
 
-                  <a
-                    href="/dhTimetableTest.apk"
-                    download="dhTimetableTest.apk"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
-                    title="Secret Test Sandbox"
-                  >
-                    <Sparkles className="w-4 h-4 text-fuchsia-400" />
-                    I'm Feeling Lucky
-                  </a>
+                  {showLucky && (
+                    <a
+                      href="/dhTimetableTest.apk"
+                      download="dhTimetableTest.apk"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-4 font-bold text-sm select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto text-text-secondary hover:text-fuchsia-100"
+                      title="Secret Test Sandbox"
+                    >
+                      <Sparkles className="w-4 h-4 text-fuchsia-400" />
+                      I'm Feeling Lucky
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
