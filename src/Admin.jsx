@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2, Settings, Sparkles } from 'lucide-react';
+import { UploadCloud, CheckCircle, AlertCircle, Key, Loader2, ArrowLeft, ShieldCheck, User, Code, CheckCircle2, Settings, Sparkles, Wrench } from 'lucide-react';
 
 export default function Admin() {
   const [username, setUsername] = useState('');
@@ -14,6 +14,7 @@ export default function Admin() {
   // Feature toggles state
   const [showBeta, setShowBeta] = useState(false);
   const [showLucky, setShowLucky] = useState(false);
+  const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [isTogglingContent, setIsTogglingContent] = useState(false);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function Admin() {
         if (data) {
           if (typeof data.showBeta !== 'undefined') setShowBeta(data.showBeta);
           if (typeof data.showLucky !== 'undefined') setShowLucky(data.showLucky);
+          if (typeof data.maintenanceMode !== 'undefined') setMaintenanceMode(data.maintenanceMode);
         }
       })
       .catch(() => {});
@@ -177,6 +179,7 @@ export default function Admin() {
 
       if (key === 'showBeta') setShowBeta(newValue);
       if (key === 'showLucky') setShowLucky(newValue);
+      if (key === 'maintenanceMode') setMaintenanceMode(newValue);
       
       setStatus('success');
     } catch (err) {
@@ -364,6 +367,35 @@ export default function Admin() {
                   <span
                     className={`inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
                       showLucky ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <hr className="border-[#2a2a30] opacity-50" />
+
+              {/* Maintenance Mode Toggle */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex flex-shrink-0 items-center justify-center">
+                    <Wrench className="w-5 h-5 text-red-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-text-primary">Maintenance Mode</h3>
+                    <p className="text-xs text-text-muted">Disable public access and show maintenance screen.</p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => updateConfigValue('maintenanceMode', !maintenanceMode)}
+                  disabled={isTogglingContent || status === 'loading'}
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-50 ${
+                    maintenanceMode ? 'bg-red-500' : 'bg-[#2a2a30]'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      maintenanceMode ? 'translate-x-5' : 'translate-x-0'
                     }`}
                   />
                 </button>

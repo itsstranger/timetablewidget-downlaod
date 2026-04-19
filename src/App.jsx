@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Download, Shield, Sparkles, Zap, ChevronRight,
   FileDown, Upload, LayoutGrid, ExternalLink, Star,
-  MessageSquare, Mail, Send, Users, Code, AlertCircle
+  MessageSquare, Mail, Send, Users, Code, AlertCircle, Wrench
 } from 'lucide-react';
 
 /* ─── "Now & Next" Phone Mockup SVG Widget ─── */
@@ -377,6 +377,7 @@ export default function App() {
   const [downloads, setDownloads] = useState(0);
   const [showBeta, setShowBeta] = useState(false);
   const [showLucky, setShowLucky] = useState(false);
+  const [maintenanceMode, setMaintenanceMode] = useState(null);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
@@ -394,15 +395,49 @@ export default function App() {
       })
       .catch(() => { });
 
-    // Fetch site config (to check if beta channel is enabled)
+    // Fetch site config
     fetch(`/config.json?t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
-        if (data && data.showBeta) setShowBeta(true);
-        if (data && data.showLucky) setShowLucky(true);
+        if (data) {
+          if (data.showBeta) setShowBeta(true);
+          if (data.showLucky) setShowLucky(true);
+          setMaintenanceMode(!!data.maintenanceMode);
+        } else {
+          setMaintenanceMode(false);
+        }
       })
-      .catch(() => { });
+      .catch(() => { setMaintenanceMode(false); });
   }, []);
+
+  if (maintenanceMode === null) {
+    return <div className="min-h-screen bg-[#060608]"></div>;
+  }
+
+  if (maintenanceMode === true) {
+    return (
+      <div className="min-h-screen bg-[#060608] flex items-center justify-center p-6 text-center font-sans relative overflow-hidden">
+        {/* Glow underneath */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(239,68,68,0.15) 0%, transparent 60%)' }}></div>
+        
+        <div className="relative z-10 glass rounded-3xl p-8 sm:p-12 max-w-lg shadow-2xl flex flex-col items-center">
+          <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-6">
+            <Wrench className="w-8 h-8 text-red-500 animate-bounce" />
+          </div>
+          <h1 className="text-3xl font-black text-white mb-4">Under Maintenance</h1>
+          <p className="text-text-secondary leading-relaxed mb-10 text-sm sm:text-base">
+            We're currently squashing some bugs and adding shiny new features! The site will be back online shortly. Please check back soon.
+          </p>
+          <div className="flex space-x-2">
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-[bounce_1s_infinite_0ms]"></div>
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-[bounce_1s_infinite_200ms]"></div>
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-[bounce_1s_infinite_400ms]"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleDownloadClick = () => {
     // Optimistic UI update
