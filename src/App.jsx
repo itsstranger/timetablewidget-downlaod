@@ -574,7 +574,7 @@ export default function App() {
               className="relative btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
             >
               <Download className="w-5 h-5" />
-              Download Stable
+              Download Simple
               <div className="absolute -top-2.5 -right-2 bg-fuchsia-500 text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shadow-lg border border-fuchsia-400 rotate-12 animate-pulse">
                 New Update
               </div>
@@ -585,11 +585,14 @@ export default function App() {
                 href="/dhTimetableBeta.apk"
                 download="dhTimetableBeta.apk"
                 id="download-apk-btn-beta"
-                className="inline-flex glass-strong items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
+                className="relative inline-flex glass-strong items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto"
                 style={{ color: '#F0F0F5', border: '1px solid rgba(255,255,255,0.1)' }}
               >
-                <Code className="w-5 h-5 text-amber-400" />
-                Get Beta Version
+                <Star className="w-5 h-5 text-amber-400" />
+                Download Pro
+                <div className="absolute -top-3 -right-2 bg-amber-500 text-white text-[10px] uppercase font-black px-2 py-0.5 rounded-full shadow-md border border-amber-400 rotate-12">
+                  BETA
+                </div>
               </a>
             )}
 
@@ -847,7 +850,7 @@ export default function App() {
                     className="relative btn-primary inline-flex items-center gap-3 rounded-2xl px-8 py-4 font-bold text-white text-base select-none w-full sm:w-auto"
                   >
                     <Download className="w-5 h-5" />
-                    Download Stable
+                    Download Simple
                     <div className="absolute -top-2.5 -right-2 bg-fuchsia-500 text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shadow-lg border border-fuchsia-400 rotate-12 animate-pulse">
                       New Update
                     </div>
@@ -857,11 +860,14 @@ export default function App() {
                       href="/dhTimetableBeta.apk"
                       download="dhTimetableBeta.apk"
                       id="download-apk-btn-2-beta"
-                      className="inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto border"
+                      className="relative inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-4 font-bold text-base select-none transition-all duration-200 hover:bg-white/5 w-full sm:w-auto border"
                       style={{ color: '#F0F0F5', borderColor: 'rgba(255,255,255,0.1)' }}
                     >
-                      <Code className="w-5 h-5 text-amber-400" />
-                      Beta Version
+                      <Star className="w-5 h-5 text-amber-400" />
+                      Download Pro
+                      <div className="absolute -top-3 -right-2 bg-amber-500 text-white text-[10px] uppercase font-black px-2 py-0.5 rounded-full shadow-md border border-amber-400 rotate-12">
+                        BETA
+                      </div>
                     </a>
                   )}
 
