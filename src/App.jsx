@@ -375,6 +375,7 @@ function StepCard({ number, icon: Icon, title, description, link, linkText, isLa
 export default function App() {
   const [heroVisible, setHeroVisible] = useState(false);
   const [downloads, setDownloads] = useState(0);
+  const [visits, setVisits] = useState(0);
   const [showBeta, setShowBeta] = useState(false);
   const [showLucky, setShowLucky] = useState(false);
   const [maintenanceMode, setMaintenanceMode] = useState(null);
@@ -391,6 +392,16 @@ export default function App() {
       .then(data => {
         if (data && typeof data.count === 'number') {
           setDownloads(data.count);
+        }
+      })
+      .catch(() => { });
+
+    // Record site visit and fetch total visits
+    fetch('https://api.counterapi.dev/v1/dhiu-tt-downloads/site_visits/up')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count === 'number') {
+          setVisits(data.count);
         }
       })
       .catch(() => { });
@@ -426,9 +437,30 @@ export default function App() {
             <Wrench className="w-8 h-8 text-red-500 animate-bounce" />
           </div>
           <h1 className="text-3xl font-black text-white mb-4">Under Maintenance</h1>
-          <p className="text-text-secondary leading-relaxed mb-10 text-sm sm:text-base">
+          <p className="text-text-secondary leading-relaxed mb-6 text-sm sm:text-base">
             We're currently squashing some bugs and adding shiny new features! The site will be back online shortly. Please check back soon.
           </p>
+
+          <div className="bg-[#121214] border border-[#2a2a30] rounded-2xl p-5 mb-8 w-full text-left shadow-lg">
+             <h4 className="font-bold text-text-primary text-sm mb-2 flex items-center justify-between">
+               A Huge Thank You! 
+               <span className="text-red-500 text-lg">❤️</span>
+             </h4>
+             <p className="text-text-muted text-xs leading-relaxed mb-4">
+               We deeply appreciate every single one of you who has supported the widget by downloading and using it!
+             </p>
+             <div className="flex gap-3">
+               <div className="bg-white/5 border border-white/5 flex-1 px-4 py-3 rounded-xl flex flex-col items-center">
+                 <p className="text-[#7B7AFF] font-black text-xl mb-1">{downloads > 0 ? downloads : '...'}</p>
+                 <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Downloads</p>
+               </div>
+               <div className="bg-white/5 border border-white/5 flex-1 px-4 py-3 rounded-xl flex flex-col items-center">
+                 <p className="text-fuchsia-400 font-black text-xl mb-1">{visits > 0 ? visits : '...'}</p>
+                 <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider">Site Visits</p>
+               </div>
+             </div>
+          </div>
+
           <div className="flex space-x-2">
             <div className="w-2 h-2 rounded-full bg-red-500 animate-[bounce_1s_infinite_0ms]"></div>
             <div className="w-2 h-2 rounded-full bg-red-500 animate-[bounce_1s_infinite_200ms]"></div>
