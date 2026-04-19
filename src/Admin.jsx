@@ -323,8 +323,8 @@ export default function Admin() {
                     <Settings className="w-5 h-5 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-text-primary">Enable Beta Downloads</h3>
-                    <p className="text-xs text-text-muted">Show the Beta Download button to all users publicly.</p>
+                    <h3 className="text-sm font-bold text-text-primary">Enable Pro Downloads</h3>
+                    <p className="text-xs text-text-muted">Show the Pro Download button to all users publicly.</p>
                   </div>
                 </div>
                 
@@ -418,7 +418,7 @@ export default function Admin() {
                   }`}
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  Stable Release
+                  Simple Release
                 </button>
                 <button
                   onClick={() => setVersionType('beta')}
@@ -429,7 +429,7 @@ export default function Admin() {
                   }`}
                 >
                   <Code className="w-4 h-4" />
-                  Beta Channel
+                  Pro Channel
                 </button>
                 <button
                   onClick={() => setVersionType('test')}
@@ -448,7 +448,7 @@ export default function Admin() {
             {/* Drag and Drop Zone */}
             <div>
               <label className="block text-sm font-semibold text-text-primary mb-2">
-                Upload New {versionType.charAt(0).toUpperCase() + versionType.slice(1)} APK
+                Upload New {versionType === 'stable' ? 'Simple' : versionType === 'beta' ? 'Pro' : 'Test'} APK
               </label>
               <div
                 onDragOver={handleDragOver}
@@ -518,7 +518,7 @@ export default function Admin() {
                   Deploying...
                 </>
               ) : (
-                `Deploy New ${versionType.charAt(0).toUpperCase() + versionType.slice(1)} APK`
+                `Deploy New ${versionType === 'stable' ? 'Simple' : versionType === 'beta' ? 'Pro' : 'Test'} APK`
               )}
             </button>
 
