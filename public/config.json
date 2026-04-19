@@ -1,3 +1,4 @@
 {
-  "showBeta": false
+  "showBeta": false,
+  "maintenanceMode": true
 }
